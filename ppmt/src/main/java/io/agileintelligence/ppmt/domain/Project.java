@@ -41,6 +41,7 @@ public class Project {
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @Column(updatable = false)
     private LocalDateTime created_At;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

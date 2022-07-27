@@ -6,6 +6,8 @@ import io.agileintelligence.ppmt.exceptions.ProjectIdException;
 import io.agileintelligence.ppmt.exceptions.ProjectNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static java.time.LocalDateTime.now;
+
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
@@ -58,13 +60,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project updateProject(String projectId, Project project) {
         Project existingProject = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
-        if (project == null) {
+        if (existingProject == null) {
             throw new ProjectNotFoundException("Cannot project project: " + projectId + " as it doesn't exist");
         }
         existingProject.setProjectName(project.getProjectName());
         existingProject.setDescription(project.getDescription());
         existingProject.setStart_date(project.getStart_date());
         existingProject.setEnd_date(project.getEnd_date());
+        existingProject.setUpdated_At(now());
         return projectRepository.save(existingProject);
     }
 }

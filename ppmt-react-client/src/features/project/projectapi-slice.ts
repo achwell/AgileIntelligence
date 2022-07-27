@@ -21,7 +21,7 @@ export const projectApiSlice = createApi({
             }),
             updateProject: builder.mutation<Project, Partial<Project>>({
                 query: (body) => ({
-                    url: `api/project/${body.id}`,
+                    url: `api/project/${body.projectIdentifier}`,
                     method: 'PUT',
                     body,
                 }),
