@@ -1,6 +1,9 @@
 package io.agileintelligence.ppmt.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import javax.persistence.*;
 
@@ -28,16 +31,20 @@ public class Project {
     @NotBlank(message = "Project description is required")
     private String description;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime start_date;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime end_date;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime created_At;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime updated_At;
 
     public Project() {

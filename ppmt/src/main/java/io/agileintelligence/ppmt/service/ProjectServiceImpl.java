@@ -35,6 +35,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Project findProjectById(Long id) {
+        return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+    }
+
+
+    @Override
     public Iterable<Project> findAllProjects() {
         return projectRepository.findAll();
     }
