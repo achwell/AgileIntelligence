@@ -1,9 +1,11 @@
-package io.agileintelligence.ppmt.service;
+package io.agileintelligence.ppmtool.services;
 
-import io.agileintelligence.ppmt.domain.Project;
-import io.agileintelligence.ppmt.repository.ProjectRepository;
-import io.agileintelligence.ppmt.exceptions.ProjectIdException;
-import io.agileintelligence.ppmt.exceptions.ProjectNotFoundException;
+import io.agileintelligence.ppmtool.domain.Backlog;
+import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.repository.BacklogRepository;
+import io.agileintelligence.ppmtool.repository.ProjectRepository;
+import io.agileintelligence.ppmtool.exceptions.ProjectIdException;
+import io.agileintelligence.ppmtool.exceptions.ProjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import static java.time.LocalDateTime.now;
@@ -13,14 +15,27 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    private final BacklogRepository backlogRepository;
+
+    public ProjectServiceImpl(ProjectRepository projectRepository, BacklogRepository backlogRepository) {
         this.projectRepository = projectRepository;
+        this.backlogRepository = backlogRepository;
     }
 
     @Override
     public Project saveProject(Project project) {
         try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            if(project.getId()==null){
+                Backlog backlog = new Backlog();
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            }
+            if(project.getId()!=null){
+                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
+            }
+
             return projectRepository.save(project);
         } catch (Exception e) {
             throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
@@ -68,6 +83,7 @@ public class ProjectServiceImpl implements ProjectService {
         existingProject.setStart_date(project.getStart_date());
         existingProject.setEnd_date(project.getEnd_date());
         existingProject.setUpdated_At(now());
+        existingProject.setBacklog(backlogRepository.findByProjectIdentifier(existingProject.getProjectIdentifier().toUpperCase()));
         return projectRepository.save(existingProject);
     }
 }

@@ -1,6 +1,6 @@
-package io.agileintelligence.ppmt.service;
+package io.agileintelligence.ppmtool.services;
 
-import io.agileintelligence.ppmt.domain.Project;
+import io.agileintelligence.ppmtool.domain.Project;
 
 public interface ProjectService {
 

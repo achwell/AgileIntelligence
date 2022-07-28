@@ -1,4 +1,4 @@
-package io.agileintelligence.ppmt.service;
+package io.agileintelligence.ppmtool.services;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.Map;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
-public class MapValidationErrorsServiceImpl implements MapValidationErrorsService {
+public class MapValidationErrorServiceImpl implements MapValidationErrorService {
 
     @Override
     public ResponseEntity<Map<String, String>> MapValidationErrorsService(BindingResult result) {

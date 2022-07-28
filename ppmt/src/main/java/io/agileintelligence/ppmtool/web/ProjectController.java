@@ -1,8 +1,8 @@
-package io.agileintelligence.ppmt.web;
+package io.agileintelligence.ppmtool.web;
 
-import io.agileintelligence.ppmt.domain.Project;
-import io.agileintelligence.ppmt.service.MapValidationErrorsService;
-import io.agileintelligence.ppmt.service.ProjectService;
+import io.agileintelligence.ppmtool.domain.Project;
+import io.agileintelligence.ppmtool.services.MapValidationErrorService;
+import io.agileintelligence.ppmtool.services.ProjectService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +20,16 @@ import static org.springframework.http.HttpStatus.OK;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final MapValidationErrorsService mapValidationErrorsService;
+    private final MapValidationErrorService mapValidationErrorService;
 
-    public ProjectController(ProjectService projectService, MapValidationErrorsService mapValidationErrorsService) {
+    public ProjectController(ProjectService projectService, MapValidationErrorService mapValidationErrorService) {
         this.projectService = projectService;
-        this.mapValidationErrorsService = mapValidationErrorsService;
+        this.mapValidationErrorService = mapValidationErrorService;
     }
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorsService.MapValidationErrorsService(result);
+        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorService.MapValidationErrorsService(result);
         if (errorMap != null) {
             return errorMap;
         }
@@ -50,7 +50,7 @@ public class ProjectController {
 
     @PutMapping("/{projectId}")
     public ResponseEntity<?> updateProject(@PathVariable String projectId, @Valid @RequestBody Project project, BindingResult result) {
-        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorsService.MapValidationErrorsService(result);
+        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorService.MapValidationErrorsService(result);
         if (errorMap != null) {
             return errorMap;
         }

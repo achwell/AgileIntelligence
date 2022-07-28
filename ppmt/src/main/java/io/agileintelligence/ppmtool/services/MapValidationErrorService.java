@@ -1,10 +1,10 @@
-package io.agileintelligence.ppmt.service;
+package io.agileintelligence.ppmtool.services;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
 import java.util.Map;
 
-public interface MapValidationErrorsService {
+public interface MapValidationErrorService {
     ResponseEntity<Map<String, String>> MapValidationErrorsService(BindingResult result);
 }
