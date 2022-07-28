@@ -4,12 +4,13 @@ import Project from "../../models/Project";
 export const projectApiSlice = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8080",
+        //baseUrl: "http://localhost:8080",
         // prepareHeaders(headers) {
         //     headers.set("x-api-key", "wfddfeqwf")
         //     return headers
         // }
     }),
+    tagTypes: ['Project'],
     endpoints(builder) {
         return {
             addProject: builder.mutation<Project, Partial<Project>>({
@@ -18,6 +19,14 @@ export const projectApiSlice = createApi({
                     method: 'POST',
                     body,
                 }),
+                invalidatesTags: [{ type: 'Project', id: 'LIST' }],
+            }),
+            deleteProject: builder.mutation<Project, Partial<Project>>({
+                query: (body) => ({
+                    url: `api/project/${body.projectIdentifier}`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: [{ type: 'Project', id: 'LIST' }],
             }),
             updateProject: builder.mutation<Project, Partial<Project>>({
                 query: (body) => ({
@@ -25,25 +34,27 @@ export const projectApiSlice = createApi({
                     method: 'PUT',
                     body,
                 }),
+                invalidatesTags: [{ type: 'Project', id: 'LIST' }],
             }),
-            // addProject: builder.mutation<Project, Partial<Project> & Pick<Project, "id">>({
-            //     query: ({id, ...project}) => ({
-            //         url: "",
-            //         method: 'POST',
-            //         body: project,
-            //     }),
-            // }),
             fetchProjects: builder.query<Project[], number | void>({
                 query(_) {
                     return "/api/project"
-                }
+                },
+                providesTags: (result) =>
+                    result
+                        ? [
+                            ...result.map(({ id }) => ({ type: 'Project' as const, id })),
+                            { type: 'Project', id: 'LIST' },
+                        ]
+                        : [{ type: 'Project', id: 'LIST' }],
             }),
             fetchProject: builder.query<Project, string>({
                 query(projectId) {
                     return `/api/project/${projectId}`
-                }
+                },
+                providesTags: (result) => result ? [{ type: 'Project', id: result.projectIdentifier }] : [{ type: 'Project' }]
             })
         }
     }
 })
-export const {useAddProjectMutation, useFetchProjectQuery, useFetchProjectsQuery, useUpdateProjectMutation} = projectApiSlice
+export const {useAddProjectMutation, useDeleteProjectMutation, useFetchProjectQuery, useFetchProjectsQuery, useUpdateProjectMutation} = projectApiSlice

@@ -2,7 +2,6 @@ import React, {useState} from "react"
 import DatePicker from "react-datepicker"
 import {Controller, useForm} from "react-hook-form"
 import Project from "../../models/Project"
-import {useAppDispatch} from "../../app/hooks"
 import {useAddProjectMutation} from "../../features/project/projectapi-slice"
 import "react-datepicker/dist/react-datepicker.css"
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
@@ -12,14 +11,13 @@ const AddProject = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>()
 
-    const {control, formState: {errors, isSubmitted}, handleSubmit, register, reset, watch} = useForm<Project>({
+    const {control, formState: {errors, isSubmitted}, handleSubmit, register, watch} = useForm<Project>({
         defaultValues: {
             projectName: "",
             projectIdentifier: "",
             description: ""
         }
     })
-    const dispatch = useAppDispatch()
     const [addProject, {isLoading}] = useAddProjectMutation()
 
     const onSubmit = (data: Project) => {

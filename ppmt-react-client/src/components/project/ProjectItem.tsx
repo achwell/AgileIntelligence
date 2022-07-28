@@ -1,12 +1,21 @@
 import React, {FC} from "react"
-import Project from "../../models/Project";
-import {Link} from "react-router-dom";
+import Project from "../../models/Project"
+import {Link} from "react-router-dom"
+import {useDeleteProjectMutation} from "../../features/project/projectapi-slice"
 
 interface Props {
     project: Project
 }
 
 const ProjectItem: FC<Props> = ({project}) => {
+    const [deleteProject] = useDeleteProjectMutation()
+
+    const onDeleteClick = () => {
+        if (window.confirm("Are you sure? This will delete the project and all the data related to it")) {
+            deleteProject(project)
+        }
+    }
+
     return (
         <div className="container">
             <div className="card card-body bg-light mb-3">
@@ -30,11 +39,9 @@ const ProjectItem: FC<Props> = ({project}) => {
                                     <i className="fa fa-edit pr-1"> Update Project Info</i>
                                 </li>
                             </Link>
-                            <a href="">
-                                <li className="list-group-item delete">
-                                    <i className="fa fa-minus-circle pr-1"> Delete Project</i>
-                                </li>
-                            </a>
+                            <li className="list-group-item delete" onClick={onDeleteClick}>
+                                <i className="fa fa-minus-circle pr-1"> Delete Project</i>
+                            </li>
                         </ul>
                     </div>
                 </div>

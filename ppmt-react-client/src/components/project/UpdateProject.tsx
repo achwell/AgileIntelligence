@@ -8,7 +8,7 @@ import {
 } from "../../features/project/projectapi-slice"
 import Project from "../../models/Project";
 import DatePicker from "react-datepicker";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const UpdateProject = () => {
 
@@ -16,15 +16,24 @@ const UpdateProject = () => {
 
     const {control, formState: {errors, isSubmitted}, handleSubmit, register, reset, watch} = useForm<Project>()
 
-    const [updateProject, {isLoading}] = useUpdateProjectMutation()
+    const [updateProject] = useUpdateProjectMutation()
 
     const {id} = useParams()
+    const navigate = useNavigate();
 
-    const {data, isFetching} = useFetchProjectQuery(id + "")
+    const {data, error} = useFetchProjectQuery(id + "")
 
     useEffect(() => {
         reset(data as Project)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
+
+    useEffect(() => {
+        if(error) {
+            navigate("/dashboard")
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [error])
 
     const onSubmit = (data: Project) => {
         updateProject(data)
