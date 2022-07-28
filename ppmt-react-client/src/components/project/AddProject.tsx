@@ -6,9 +6,12 @@ import {useAddProjectMutation} from "../../features/project/projectapi-slice"
 import "react-datepicker/dist/react-datepicker.css"
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {SerializedError} from "@reduxjs/toolkit";
+import classnames from "classnames";
+import {useNavigate} from "react-router-dom";
 
 const AddProject = () => {
 
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>()
 
     const {control, formState: {errors, isSubmitted}, handleSubmit, register, watch} = useForm<Project>({
@@ -24,6 +27,7 @@ const AddProject = () => {
         addProject(data)
             .then((response: { data: Project } | { error: FetchBaseQueryError | SerializedError }) => {
                 console.log({response})
+                navigate("/dashboard")
             })
             .catch(error => {
                 console.error({error})
@@ -52,7 +56,9 @@ const AddProject = () => {
                                 <div className="form-group">
                                     <input
                                         type="text"
-                                        className="form-control form-control-lg"
+                                        className={classnames("form-control form-control-lg", {
+                                            "is-invalid": errors.projectName
+                                        })}
                                         placeholder="Project Name"
                                         required
                                         {...register("projectName", {
@@ -68,7 +74,9 @@ const AddProject = () => {
                                 <div className="form-group">
                                     <input
                                         type="text"
-                                        className="form-control form-control-lg"
+                                        className={classnames("form-control form-control-lg", {
+                                            "is-invalid": errors.projectIdentifier
+                                        })}
                                         placeholder="Unique Project ID"
                                         maxLength={5}
                                         minLength={4}
@@ -86,7 +94,9 @@ const AddProject = () => {
                                 </div>
                                 <div className="form-group">
                                     <textarea
-                                        className="form-control form-control-lg"
+                                        className={classnames("form-control form-control-lg", {
+                                            "is-invalid": errors.description
+                                        })}
                                         placeholder="Project Description"
                                         {...register("description")}
                                     />
@@ -108,7 +118,9 @@ const AddProject = () => {
                                                 onBlur={onBlur}
                                                 dateFormat="dd.MM.yyyy"
                                                 minDate={new Date()}
-                                                className="form-control form-control-lg"
+                                                className={classnames("form-control form-control-lg", {
+                                                    "is-invalid": errors.start_date
+                                                })}
                                                 selected={startDate ? new Date(startDate) : undefined}
                                                 showTimeSelect={false}
                                                 todayButton="I dag"
@@ -136,7 +148,9 @@ const AddProject = () => {
                                                 onBlur={onBlur}
                                                 dateFormat="dd.MM.yyyy"
                                                 minDate={new Date()}
-                                                className="form-control form-control-lg"
+                                                className={classnames("form-control form-control-lg", {
+                                                    "is-invalid": errors.end_date
+                                                })}
                                                 selected={endDate ? new Date(endDate) : undefined}
                                                 showTimeSelect={false}
                                                 todayButton="I dag"

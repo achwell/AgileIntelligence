@@ -9,6 +9,7 @@ import {
 import Project from "../../models/Project";
 import DatePicker from "react-datepicker";
 import {useNavigate, useParams} from "react-router-dom";
+import classnames from "classnames";
 
 const UpdateProject = () => {
 
@@ -21,7 +22,7 @@ const UpdateProject = () => {
     const {id} = useParams()
     const navigate = useNavigate();
 
-    const {data, error} = useFetchProjectQuery(id + "")
+    const {data, error} = useFetchProjectQuery(id!)
 
     useEffect(() => {
         reset(data as Project)
@@ -66,7 +67,9 @@ const UpdateProject = () => {
                             <div className="form-group">
                                 <input
                                     type="text"
-                                    className="form-control form-control-lg"
+                                    className={classnames("form-control form-control-lg", {
+                                        "is-invalid": errors.projectName
+                                    })}
                                     placeholder="Project Name"
                                     required
                                     {...register("projectName", {
@@ -82,7 +85,9 @@ const UpdateProject = () => {
                             <div className="form-group">
                                 <input
                                     type="text"
-                                    className="form-control form-control-lg"
+                                    className={classnames("form-control form-control-lg", {
+                                        "is-invalid": errors.projectIdentifier
+                                    })}
                                     placeholder="Unique Project ID"
                                     required
                                     disabled
@@ -98,7 +103,9 @@ const UpdateProject = () => {
                             </div>
                             <div className="form-group">
                                     <textarea
-                                        className="form-control form-control-lg"
+                                        className={classnames("form-control form-control-lg", {
+                                            "is-invalid": errors.description
+                                        })}
                                         placeholder="Project Description"
                                         {...register("description")}
                                     />
@@ -120,7 +127,9 @@ const UpdateProject = () => {
                                             onBlur={onBlur}
                                             dateFormat="dd.MM.yyyy"
                                             minDate={new Date()}
-                                            className="form-control form-control-lg"
+                                            className={classnames("form-control form-control-lg", {
+                                                "is-invalid": errors.start_date
+                                            })}
                                             selected={startDate ? new Date(startDate) : undefined}
                                             showTimeSelect={false}
                                             todayButton="I dag"
@@ -148,7 +157,9 @@ const UpdateProject = () => {
                                             onBlur={onBlur}
                                             dateFormat="dd.MM.yyyy"
                                             minDate={new Date()}
-                                            className="form-control form-control-lg"
+                                            className={classnames("form-control form-control-lg", {
+                                                "is-invalid": errors.end_date
+                                            })}
                                             selected={endDate ? new Date(endDate) : undefined}
                                             showTimeSelect={false}
                                             todayButton="I dag"

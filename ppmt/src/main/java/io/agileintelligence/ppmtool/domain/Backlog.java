@@ -18,7 +18,7 @@ public class Backlog {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private Integer PTSequence = 0;
+    private Integer ptSequence = 0;
     private String projectIdentifier;
 
     //OneToOne with project
@@ -43,12 +43,12 @@ public class Backlog {
         this.id = id;
     }
 
-    public Integer getPTSequence() {
-        return PTSequence;
+    public Integer getPtSequence() {
+        return ptSequence;
     }
 
-    public void setPTSequence(Integer PTSequence) {
-        this.PTSequence = PTSequence;
+    public void setPtSequence(Integer PTSequence) {
+        this.ptSequence = PTSequence;
     }
 
     public String getProjectIdentifier() {

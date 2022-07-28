@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 import Project from "../../models/Project";
 
 export const projectApiSlice = createApi({
-    reducerPath: "api",
+    reducerPath: "project",
     baseQuery: fetchBaseQuery({
         //baseUrl: "http://localhost:8080",
         // prepareHeaders(headers) {
@@ -15,7 +15,7 @@ export const projectApiSlice = createApi({
         return {
             addProject: builder.mutation<Project, Partial<Project>>({
                 query: (body) => ({
-                    url: "api/project",
+                    url: "/api/project",
                     method: 'POST',
                     body,
                 }),
@@ -23,14 +23,14 @@ export const projectApiSlice = createApi({
             }),
             deleteProject: builder.mutation<Project, Partial<Project>>({
                 query: (body) => ({
-                    url: `api/project/${body.projectIdentifier}`,
+                    url: `/api/project/${body.projectIdentifier}`,
                     method: 'DELETE',
                 }),
                 invalidatesTags: [{ type: 'Project', id: 'LIST' }],
             }),
             updateProject: builder.mutation<Project, Partial<Project>>({
                 query: (body) => ({
-                    url: `api/project/${body.projectIdentifier}`,
+                    url: `/api/project/${body.projectIdentifier}`,
                     method: 'PUT',
                     body,
                 }),

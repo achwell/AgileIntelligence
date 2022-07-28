@@ -1,13 +1,15 @@
 import {configureStore} from "@reduxjs/toolkit"
-import counterReducer from "../features/counter/counter-slice"
 import {projectApiSlice} from "../features/project/projectapi-slice"
+import {backlogApiSlice} from "../features/backlog/backlog-slice"
 export const store = configureStore({
     reducer: {
-        counter: counterReducer,
-        [projectApiSlice.reducerPath]: projectApiSlice.reducer
+        [projectApiSlice.reducerPath]: projectApiSlice.reducer,
+        [backlogApiSlice.reducerPath]: backlogApiSlice.reducer
     },
     middleware: (getDefaultMiddleware) => {
-        return getDefaultMiddleware().concat(projectApiSlice.middleware)
+        return getDefaultMiddleware()
+            .concat(projectApiSlice.middleware)
+            .concat(backlogApiSlice.middleware)
     }
 })
 

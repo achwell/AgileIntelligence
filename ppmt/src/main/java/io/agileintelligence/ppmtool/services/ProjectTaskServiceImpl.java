@@ -10,6 +10,8 @@ import io.agileintelligence.ppmtool.repository.ProjectTaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ProjectTaskServiceImpl implements ProjectTaskService {
 
@@ -26,6 +28,7 @@ public class ProjectTaskServiceImpl implements ProjectTaskService {
     }
 
     @Override
+    @Transactional
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
 
         //PTs to be added to a specific project, project != null, BL exists
@@ -36,10 +39,14 @@ public class ProjectTaskServiceImpl implements ProjectTaskService {
         //set the bl to pt
         projectTask.setBacklog(backlog);
         //we want our project sequence to be like this: IDPRO-1  IDPRO-2  ...100 101
-        Integer backlogsequence = backlog.getPTSequence();
+        Integer backlogsequence = backlog.getPtSequence();
+        if(backlogsequence == null) {
+            backlogsequence = 0;
+        }
         // Update the BL SEQUENCE
         backlogsequence++;
-        backlog.setPTSequence(backlogsequence);
+        backlog.setPtSequence(backlogsequence);
+        backlogRepository.save(backlog);
 
         //Add Sequence to Project Task
         projectTask.setProjectSequence(projectIdentifier + "-" + backlogsequence);
