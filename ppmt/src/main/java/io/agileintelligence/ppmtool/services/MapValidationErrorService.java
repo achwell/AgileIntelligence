@@ -6,5 +6,5 @@ import org.springframework.validation.BindingResult;
 import java.util.Map;
 
 public interface MapValidationErrorService {
-    ResponseEntity<Map<String, String>> MapValidationErrorsService(BindingResult result);
+    ResponseEntity<Map<String, String>> MapValidationService(BindingResult result);
 }

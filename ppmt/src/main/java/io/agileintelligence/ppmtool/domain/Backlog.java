@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -28,7 +28,7 @@ public class Backlog {
     private Project project;
 
     //OneToMany projecttasks
-    @OneToMany(cascade = ALL, fetch = EAGER, mappedBy = "backlog")
+    @OneToMany(cascade = REFRESH, fetch = EAGER, mappedBy = "backlog", orphanRemoval = true)
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
 

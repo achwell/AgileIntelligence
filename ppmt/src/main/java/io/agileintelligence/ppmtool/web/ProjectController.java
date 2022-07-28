@@ -29,7 +29,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorService.MapValidationErrorsService(result);
+        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) {
             return errorMap;
         }
@@ -50,7 +50,7 @@ public class ProjectController {
 
     @PutMapping("/{projectId}")
     public ResponseEntity<?> updateProject(@PathVariable String projectId, @Valid @RequestBody Project project, BindingResult result) {
-        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorService.MapValidationErrorsService(result);
+        ResponseEntity<Map<String, String>> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) {
             return errorMap;
         }

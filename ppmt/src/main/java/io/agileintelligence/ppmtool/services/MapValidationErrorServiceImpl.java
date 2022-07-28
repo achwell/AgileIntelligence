@@ -14,7 +14,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 public class MapValidationErrorServiceImpl implements MapValidationErrorService {
 
     @Override
-    public ResponseEntity<Map<String, String>> MapValidationErrorsService(BindingResult result) {
+    public ResponseEntity<Map<String, String>> MapValidationService(BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {

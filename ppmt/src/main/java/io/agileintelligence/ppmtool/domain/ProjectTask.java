@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
-import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -18,7 +17,7 @@ public class ProjectTask {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    @Column(updatable = false)
+    @Column(updatable = false, unique = true)
     private String projectSequence;
     @NotBlank(message = "Please include a project summary")
     private String summary;
@@ -28,7 +27,7 @@ public class ProjectTask {
     private LocalDateTime dueDate;
 
     //ManyToOne with Backlog
-    @ManyToOne(fetch = EAGER, cascade = REFRESH)
+    @ManyToOne(fetch = EAGER)
     @JoinColumn(name="backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;
