@@ -7,4 +7,5 @@ export default interface Project {
     end_date?: string
     created_At?: string
     updated_At?: string
+    projectLeader?: string
 }

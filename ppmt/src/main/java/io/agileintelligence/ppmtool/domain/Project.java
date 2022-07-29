@@ -17,6 +17,7 @@ import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
+@Table(name = "ppmtoolproject")
 public class Project {
 
     @Id
@@ -54,6 +55,12 @@ public class Project {
     @OneToOne(fetch = EAGER, cascade = ALL, mappedBy = "project")
     @JsonIgnore
     private Backlog backlog;
+
+    @ManyToOne(fetch = EAGER)
+    @JsonIgnore
+    private User user;
+
+    private String projectLeader;
 
     public Project() {
     }
@@ -128,6 +135,22 @@ public class Project {
 
     public void setBacklog(Backlog backlog) {
         this.backlog = backlog;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getProjectLeader() {
+        return projectLeader;
+    }
+
+    public void setProjectLeader(String projectLeader) {
+        this.projectLeader = projectLeader;
     }
 
     @PrePersist

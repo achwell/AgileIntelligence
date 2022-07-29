@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     Project findByProjectIdentifier(String projectid);
+
+    Iterable<Project> findAllByProjectLeader(String username);
 }

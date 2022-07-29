@@ -1,11 +1,9 @@
 package io.agileintelligence.ppmtool.services;
 
 import io.agileintelligence.ppmtool.domain.Backlog;
-import io.agileintelligence.ppmtool.domain.Project;
 import io.agileintelligence.ppmtool.domain.ProjectTask;
 import io.agileintelligence.ppmtool.exceptions.ProjectNotFoundException;
 import io.agileintelligence.ppmtool.repository.BacklogRepository;
-import io.agileintelligence.ppmtool.repository.ProjectRepository;
 import io.agileintelligence.ppmtool.repository.ProjectTaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -19,20 +17,21 @@ public class ProjectTaskServiceImpl implements ProjectTaskService {
 
     private final ProjectTaskRepository projectTaskRepository;
 
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
-    public ProjectTaskServiceImpl(BacklogRepository backlogRepository, ProjectTaskRepository projectTaskRepository, ProjectRepository projectRepository) {
+    public ProjectTaskServiceImpl(BacklogRepository backlogRepository, ProjectTaskRepository projectTaskRepository, ProjectService projectService) {
         this.backlogRepository = backlogRepository;
         this.projectTaskRepository = projectTaskRepository;
-        this.projectRepository = projectRepository;
+        this.projectService = projectService;
     }
 
     @Override
     @Transactional
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask, String username) {
 
         //PTs to be added to a specific project, project != null, BL exists
-        Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
+        Backlog backlog =  projectService.findProjectByIdentifier(projectIdentifier, username).getBacklog();
+
         if (backlog == null) {
             throw new ProjectNotFoundException("Project with ID: '" + projectIdentifier + "' does not exist");
         }
@@ -67,20 +66,14 @@ public class ProjectTaskServiceImpl implements ProjectTaskService {
     }
 
     @Override
-    public Iterable<ProjectTask> findBacklogById(String backlogId) {
-        Project project = projectRepository.findByProjectIdentifier(backlogId);
-        if (project == null) {
-            throw new ProjectNotFoundException("Project with ID: '" + backlogId + "' does not exist");
-        }
+    public Iterable<ProjectTask> findBacklogById(String backlogId, String username) {
+        projectService.findProjectByIdentifier(backlogId, username);
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(backlogId);
     }
 
     @Override
-    public ProjectTask findPTByProjectSequence(String backlogId, String sequence) {
-        Backlog backlog = backlogRepository.findByProjectIdentifier(backlogId);
-        if (backlog == null) {
-            throw new ProjectNotFoundException("Project with ID: '" + backlogId + "' does not exist");
-        }
+    public ProjectTask findPTByProjectSequence(String backlogId, String sequence, String username) {
+        projectService.findProjectByIdentifier(backlogId, username);
         ProjectTask projectTask = projectTaskRepository.findByProjectSequence(sequence);
         if (projectTask == null) {
             throw new ProjectNotFoundException("Project Task '" + sequence + "' not found");
@@ -92,8 +85,8 @@ public class ProjectTaskServiceImpl implements ProjectTaskService {
     }
 
     @Override
-    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlogId, String sequence) {
-        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlogId, String sequence, String username) {
+        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence, username);
         projectTask.setAcceptanceCriteria(updatedTask.getAcceptanceCriteria());
         projectTask.setDueDate(updatedTask.getDueDate());
         projectTask.setPriority(updatedTask.getPriority());
@@ -103,8 +96,8 @@ public class ProjectTaskServiceImpl implements ProjectTaskService {
     }
 
     @Override
-    public void deletePTByProjectSequence(String backlogId, String sequence){
-        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence);
+    public void deletePTByProjectSequence(String backlogId, String sequence, String username){
+        ProjectTask projectTask = findPTByProjectSequence(backlogId, sequence, username);
         projectTaskRepository.delete(projectTask);
     }
 }
