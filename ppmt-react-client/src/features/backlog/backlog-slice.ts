@@ -4,11 +4,10 @@ import IProjectTask from "../../models/ProjectTask";
 export const backlogApiSlice = createApi({
     reducerPath: "backlog",
     baseQuery: fetchBaseQuery({
-        //baseUrl: "http://localhost:8080",
-        // prepareHeaders(headers) {
-        //     headers.set("x-api-key", "wfddfeqwf")
-        //     return headers
-        // }
+        prepareHeaders(headers) {
+            headers.set("Authorization", localStorage.getItem("token") ||"")
+            return headers
+        }
     }),
     tagTypes: ['Backlog', 'ProjectTask'],
     endpoints(builder) {

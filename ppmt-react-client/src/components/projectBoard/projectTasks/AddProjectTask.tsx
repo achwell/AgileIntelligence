@@ -36,7 +36,6 @@ const AddProjectTask = () => {
     const onSubmit = (data: IProjectTask) => {
         addProjectTaskToBacklog(data)
             .then(response => {
-                console.log({response})
                 navigate(`/projectBoard/${id}`)
             })
             .catch(error => {

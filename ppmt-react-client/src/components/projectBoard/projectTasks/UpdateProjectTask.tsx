@@ -25,6 +25,7 @@ const UpdateProjectTask = () => {
         if (projectTask) {
             reset(projectTask)
         }
+        // eslint-disable-next-line
     }, [projectTask])
 
     useEffect(() => {

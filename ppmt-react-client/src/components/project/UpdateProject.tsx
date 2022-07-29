@@ -6,7 +6,7 @@ import {
     useUpdateProjectMutation,
     useFetchProjectQuery
 } from "../../features/project/projectapi-slice"
-import Project from "../../models/Project";
+import IProject from "../../models/Project";
 import DatePicker from "react-datepicker";
 import {useNavigate, useParams} from "react-router-dom";
 import classnames from "classnames";
@@ -15,7 +15,7 @@ const UpdateProject = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>()
 
-    const {control, formState: {errors, isSubmitted}, handleSubmit, register, reset, watch} = useForm<Project>()
+    const {control, formState: {errors, isSubmitted}, handleSubmit, register, reset, watch} = useForm<IProject>()
 
     const [updateProject] = useUpdateProjectMutation()
 
@@ -25,7 +25,7 @@ const UpdateProject = () => {
     const {data, error} = useFetchProjectQuery(id!)
 
     useEffect(() => {
-        reset(data as Project)
+        reset(data as IProject)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
@@ -36,9 +36,9 @@ const UpdateProject = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error])
 
-    const onSubmit = (data: Project) => {
+    const onSubmit = (data: IProject) => {
         updateProject(data)
-            .then((response: { data: Project } | { error: FetchBaseQueryError | SerializedError }) => {
+            .then((response: { data: IProject } | { error: FetchBaseQueryError | SerializedError }) => {
                 console.log({response})
             })
             .catch(error => {
