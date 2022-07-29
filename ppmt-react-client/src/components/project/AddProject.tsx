@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import DatePicker from "react-datepicker"
 import {Controller, useForm} from "react-hook-form"
-import Project from "../../models/Project"
+import IProject from "../../models/Project"
 import {useAddProjectMutation} from "../../features/project/projectapi-slice"
 import "react-datepicker/dist/react-datepicker.css"
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
@@ -14,7 +14,7 @@ const AddProject = () => {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState<string>()
 
-    const {control, formState: {errors, isSubmitted}, handleSubmit, register, watch} = useForm<Project>({
+    const {control, formState: {errors, isSubmitted}, handleSubmit, register, watch} = useForm<IProject>({
         defaultValues: {
             projectName: "",
             projectIdentifier: "",
@@ -23,9 +23,9 @@ const AddProject = () => {
     })
     const [addProject, {isLoading}] = useAddProjectMutation()
 
-    const onSubmit = (data: Project) => {
+    const onSubmit = (data: IProject) => {
         addProject(data)
-            .then((response: { data: Project } | { error: FetchBaseQueryError | SerializedError }) => {
+            .then((response: { data: IProject } | { error: FetchBaseQueryError | SerializedError }) => {
                 console.log({response})
                 navigate("/dashboard")
             })

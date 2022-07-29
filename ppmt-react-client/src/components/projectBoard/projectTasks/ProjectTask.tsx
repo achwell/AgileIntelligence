@@ -28,6 +28,7 @@ const ProjectTask:FC<Props> = ({projectTask}) => {
                 setPriorityClass("bg-info text-light")
                 break;
         }
+        // eslint-disable-next-line
     }, [])
 
     const onDeleteClick = () => {

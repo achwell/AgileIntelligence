@@ -1,10 +1,10 @@
 import React, {FC} from "react"
-import Project from "../../models/Project"
+import IProject from "../../models/Project"
 import {Link} from "react-router-dom"
 import {useDeleteProjectMutation} from "../../features/project/projectapi-slice"
 
 interface Props {
-    project: Project
+    project: IProject
 }
 
 const ProjectItem: FC<Props> = ({project}) => {

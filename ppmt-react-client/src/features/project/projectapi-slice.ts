@@ -1,14 +1,14 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
-import Project from "../../models/Project";
+import Project from "../../models/Project"
 
 export const projectApiSlice = createApi({
     reducerPath: "project",
     baseQuery: fetchBaseQuery({
         //baseUrl: "http://localhost:8080",
-        // prepareHeaders(headers) {
-        //     headers.set("x-api-key", "wfddfeqwf")
-        //     return headers
-        // }
+        prepareHeaders(headers) {
+            headers.set("Authorization", localStorage.getItem("token") ||"")
+            return headers
+        }
     }),
     tagTypes: ['Project'],
     endpoints(builder) {
